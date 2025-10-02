@@ -1,0 +1,26 @@
+id: "wsj"
+name: "The Wall Street Journal"
+source_type_priority: ["rss", "html"]
+frontpage_url: "https://www.wsj.com/"
+rss_feeds:
+  - "https://feeds.a.dj.com/rss/RSSWorldNews.xml"  # World News (Dow Jones)
+per_feed_limit: 15
+max_items: 15
+requires_js_render: false
+respect_robots: true
+throttle:
+  per_host_rps: 1
+headers:
+  User-Agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36"
+  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+  Accept-Language: "en-US,en;q=0.9"
+  Upgrade-Insecure-Requests: "1"
+rss_enrich: true
+amp_fallback: true
+mobile_headers:
+  User-Agent: "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Mobile Safari/537.36"
+  Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+  Accept-Language: "en-US,en;q=0.9"
+mirror_base: "https://r.jina.ai/"
+rss_only: true
+

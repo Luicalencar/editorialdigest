@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NYT Front Page Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#DC2626", // Red-600
+            "background-light": "#F9FAFB", // Gray-50
+            "background-dark": "#111827", // Gray-900
+            "card-light": "#FFFFFF",
+            "card-dark": "#1F2937", // Gray-800
+            "text-light-primary": "#111827", // Gray-900
+            "text-dark-primary": "#F9FAFB", // Gray-50
+            "text-light-secondary": "#6B7280", // Gray-500
+            "text-dark-secondary": "#9CA3AF", // Gray-400
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+          },
+        },
+      },
+    }
+  </script>
+<style type="text/tailwindcss">
+    :root {
+      --score-1: #EF4444;--score-2: #F97316;--score-3: #F59E0B;--score-4: #EAB308;--score-5: #FACC15;--score-6: #A3E635;--score-7: #4ADE80;--score-8: #F97316;--score-9: #10B981;--score-10: #16A34A;}
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    details>summary {
+      list-style: none;
+    }
+    details>summary::-webkit-details-marker {
+      display: none;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    main {
+        padding-bottom: 2rem; 
+    }
+    details[open] summary ~ * {
+        animation: sweep .5s ease-in-out;
+    }
+    @keyframes sweep {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
+    }
+  </style>
+<script>
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+    function applyScoreColors() {
+        document.querySelectorAll('[data-score]').forEach(el => {
+            const score = parseFloat(el.dataset.score);
+            if (isNaN(score)) return;
+            // Define the gradient stops
+            const colors = [
+                { score: 1, color: [239, 68, 68] },   // red-500
+                { score: 4, color: [245, 158, 11] },  // amber-500
+                { score: 8, color: [249, 115, 22] },  // orange-500
+                { score: 9, color: [16, 185, 129] },  // emerald-500
+                { score: 10, color: [22, 163, 74] }    // green-600
+            ];
+            let lowerBound, upperBound;
+            for (let i = 0; i < colors.length - 1; i++) {
+                if (score >= colors[i].score && score <= colors[i+1].score) {
+                    lowerBound = colors[i];
+                    upperBound = colors[i+1];
+                    break;
+                }
+            }
+            if (!lowerBound) {
+                lowerBound = score < 1 ? colors[0] : colors[colors.length-1];
+                upperBound = lowerBound;
+            }
+            const scoreRange = upperBound.score - lowerBound.score;
+            const percentage = scoreRange === 0 ? 0 : (score - lowerBound.score) / scoreRange;
+            const r = Math.round(lowerBound.color[0] + (upperBound.color[0] - lowerBound.color[0]) * percentage);
+            const g = Math.round(lowerBound.color[1] + (upperBound.color[1] - lowerBound.color[1]) * percentage);
+            const b = Math.round(lowerBound.color[2] + (upperBound.color[2] - lowerBound.color[2]) * percentage);
+            const color = `rgb(${r}, ${g}, ${b})`;
+            el.style.color = color;
+            if(el.classList.contains('border-2')) {
+              el.style.borderColor = color;
+            }
+            if(el.classList.contains('px-3')) { // for dropdown scores
+              el.style.backgroundColor = color;
+              el.style.color = 'white';
+            }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', applyScoreColors);
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-light-primary dark:text-text-dark-primary transition-colors duration-300">
+<div class="flex flex-col min-h-screen">
+<header class="sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-20">
+<div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+<div class="w-10"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">newspaper</span>
+<h1 class="text-base font-bold text-center uppercase tracking-wider">Charlie's Editorial Analysis</h1>
+</div>
+<button class="text-text-light-primary dark:text-text-dark-primary p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" onclick="toggleDarkMode()">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:inline">light_mode</span>
+</button>
+</div>
+<div class="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+<div class="px-4 py-2 overflow-x-auto no-scrollbar">
+<div class="flex items-center space-x-4 whitespace-nowrap">
+<div class="relative">
+<details class="group">
+<summary class="flex items-center space-x-2 cursor-pointer">
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary">calendar_today</span>
+<span class="text-sm font-medium">Today</span>
+<span class="material-symbols-outlined text-sm text-text-light-secondary dark:text-text-dark-secondary transition-transform duration-300 group-open:rotate-180">expand_more</span>
+</summary>
+<div class="absolute left-0 mt-2 w-56 bg-card-light dark:bg-card-dark rounded-lg shadow-2xl border border-gray-300 dark:border-gray-600 overflow-hidden z-30">
+<ul class="text-sm font-medium text-text-light-primary dark:text-text-dark-primary divide-y divide-gray-200 dark:divide-gray-700">
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Today</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Yesterday</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>October 24, 2023</span>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class="relative">
+<details class="group">
+<summary class="flex items-center space-x-2 cursor-pointer">
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary">source</span>
+<span class="text-sm font-medium">The New York Times</span>
+<span class="material-symbols-outlined text-sm text-text-light-secondary dark:text-text-dark-secondary transition-transform duration-300 group-open:rotate-180">expand_more</span>
+</summary>
+<div class="absolute left-0 mt-2 w-56 bg-card-light dark:bg-card-dark rounded-lg shadow-2xl border border-gray-300 dark:border-gray-600 overflow-hidden z-30">
+<ul class="text-sm font-medium text-text-light-primary dark:text-text-dark-primary divide-y divide-gray-200 dark:divide-gray-700">
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>The New York Times</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Wall Street Journal</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Estadão</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Folha de São Paulo</span>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<div class="relative">
+<details class="group">
+<summary class="flex items-center space-x-2 cursor-pointer">
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary">topic</span>
+<span class="text-sm font-medium">All Subjects</span>
+<span class="material-symbols-outlined text-sm text-text-light-secondary dark:text-text-dark-secondary transition-transform duration-300 group-open:rotate-180">expand_more</span>
+</summary>
+<div class="absolute left-0 mt-2 w-56 bg-card-light dark:bg-card-dark rounded-lg shadow-2xl border border-gray-300 dark:border-gray-600 overflow-hidden z-30">
+<ul class="text-sm font-medium text-text-light-primary dark:text-text-dark-primary divide-y divide-gray-200 dark:divide-gray-700">
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>All Subjects</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Politics</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Economics</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Technology</span>
+</li>
+<li class="px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer transition-colors">
+<span>Health</span>
+</li>
+</ul>
+</div>
+</details>
+</div>
+</div>
+</div>
+<div class="bg-background-light dark:bg-background-dark p-4">
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-md p-4 flex items-center justify-between">
+<div>
+<h2 class="text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary">The New York Times, Today General Score</h2>
+<p class="text-xs text-text-light-secondary dark:text-text-dark-secondary">(Average of top 15 articles)</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="border-2 rounded-lg p-2 flex items-center justify-center w-20 h-14" data-score="5.2">
+<span class="text-4xl font-bold">5.2</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-red-500">arrow_drop_down</span>
+<span class="text-xs font-semibold text-red-500">-1.5</span>
+</div>
+</div>
+</div>
+</div>
+</div></header>
+<main class="flex-grow p-4 space-y-4">
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm overflow-hidden">
+<div class="p-4">
+<div class="flex gap-4">
+<img alt="Placeholder image for news article" class="w-24 h-24 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2JhuDFSgQTUmjgoXh2Q77thG6WrtLrpB-AtODOANFFLoLBI2mUFXVYp9TgnNWLEe-Py2ubN6rcd7SNe4kBZXRoLZv2bl0FSXxqDZcugVsPLqSil9_0Xjwu7VPxzBcJQBTC8odf7vqYyJS9HPkLh-PwgVRCf-CB7bWnS7xgMiNatsZAsXC95TMrcrWxMQrEA9ntbyGIs-l2lA7wVlsz4gYbhXMq0zFQsLxMSfyPlYy51suvs-hKQD3euPsJkQWTbFeQYx3-IKo7D94"/>
+<div class="flex-1 grid grid-cols-[1fr_auto] gap-4">
+<div class="flex flex-col justify-start">
+<h2 class="font-bold text-lg leading-tight">Tech Giants Face Antitrust Scrutiny</h2>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary mt-1">By Luiz Carlos Alencar</p>
+</div>
+<div class="flex flex-col items-center justify-start space-y-2">
+<span class="text-xs font-medium text-text-light-secondary dark:text-text-dark-secondary">Score</span>
+<div class="border-2 rounded-lg p-2 flex items-center justify-center w-20 h-14" data-score="3.5">
+<span class="font-bold text-3xl">3.5</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-bold text-sm text-blue-400">78%</span>
+<button class="p-1 text-green-500 rounded-full hover:bg-green-100 dark:hover:bg-green-900/50">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+</button>
+<button class="p-1 text-red-500 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50">
+<span class="material-symbols-outlined text-base">thumb_down</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 space-y-2">
+<details class="group" open="">
+<summary class="flex items-center justify-between p-3 cursor-pointer bg-gray-100 dark:bg-gray-700/50 rounded-lg">
+<div class="flex items-center justify-between w-full">
+<span class="bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">APLICAÇÃO DE INVERSÃO</span>
+<span class="text-white text-sm font-bold px-3 py-1 rounded-full" data-score="2.0">2.0</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 ml-2">expand_more</span>
+</summary>
+<div class="px-3 pt-3 pb-2 text-sm text-text-light-secondary dark:text-text-dark-secondary space-y-3">
+<div>
+<p class="font-semibold text-text-light-primary dark:text-text-dark-primary mb-1">Problema Identificado:</p>
+<ul class="list-disc list-inside space-y-1">
+<li>Falha crítica na metodologia Munger - Editoriais não exploram adequadamente argumentos contrários</li>
+<li>Falta de questionamento sistemático da tese principal</li>
+<li>Ausência do princípio "Invert, Always Invert"</li>
+</ul>
+</div>
+<div>
+<p class="font-semibold text-text-light-primary dark:text-text-dark-primary mb-1">Impacto:</p>
+<p>Reduz credibilidade e profundidade argumentativa</p>
+</div>
+<div>
+<p class="font-semibold text-text-light-primary dark:text-text-dark-primary mb-1">Recomendações Específicas:</p>
+<ul class="list-disc list-inside space-y-1">
+<li>Implementar checklist obrigatório: Toda editorial deve incluir seção "Por que esta posição pode estar errada?"</li>
+<li>Treinamento em inversão: Workshop específico sobre o método de Munger</li>
+<li>Revisão editorial: Editor deve verificar se argumentos contrários foram explorados</li>
+</ul>
+</div>
+</div>
+</details>
+<details class="group">
+<summary class="flex items-center justify-between p-3 cursor-pointer bg-gray-100 dark:bg-gray-700/50 rounded-lg">
+<div class="flex items-center justify-between w-full">
+<span class="bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">CONTROLE DE VIÉS IDEOLÓGICO</span>
+<span class="text-white text-sm font-bold px-3 py-1 rounded-full" data-score="4.0">4.0</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 ml-2">expand_more</span>
+</summary>
+<div class="px-3 pt-2 pb-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+<p>The article shows a slight bias towards a specific political viewpoint.</p>
+</div>
+</details>
+<details class="group">
+<summary class="flex items-center justify-between p-3 cursor-pointer bg-gray-100 dark:bg-gray-700/50 rounded-lg">
+<div class="flex items-center justify-between w-full">
+<span class="bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">ANÁLISE DE FORÇAS SOCIAIS</span>
+<span class="text-white text-sm font-bold px-3 py-1 rounded-full" data-score="3.0">3.0</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 ml-2">expand_more</span>
+</summary>
+<div class="px-3 pt-2 pb-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+<p>Limited exploration of the impact on different social groups.</p>
+</div>
+</details>
+<details class="group">
+<summary class="flex items-center justify-between p-3 cursor-pointer bg-gray-100 dark:bg-gray-700/50 rounded-lg">
+<div class="flex items-center justify-between w-full">
+<span class="bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">MULTIDISCIPLINARIDADE</span>
+<span class="text-white text-sm font-bold px-3 py-1 rounded-full" data-score="5.0">5.0</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 ml-2">expand_more</span>
+</summary>
+<div class="px-3 pt-2 pb-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+<p>The article primarily relies on a single field of expertise.</p>
+</div>
+</details>
+<details class="group">
+<summary class="flex items-center justify-between p-3 cursor-pointer bg-gray-100 dark:bg-gray-700/50 rounded-lg">
+<div class="flex items-center justify-between w-full">
+<span class="bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">LINGUAGEM E CREDIBILIDADE</span>
+<span class="text-white text-sm font-bold px-3 py-1 rounded-full" data-score="3.5">3.5</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-300 group-open:rotate-180 ml-2">expand_more</span>
+</summary>
+<div class="px-3 pt-2 pb-1 text-sm text-text-light-secondary dark:text-text-dark-secondary">
+<p>The article uses some jargon and sources could be more robust.</p>
+</div>
+</details>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm p-4">
+<div class="flex gap-4">
+<img alt="Placeholder image for news article" class="w-24 h-24 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_eV6uGLeooPG6QPWPnMFXq0Q8MD5DTGfgocHwq1y8ALnDRc1bZ5a-DjwKE0PCVmf3uKatQyl5JBNnO3nvFEbBuedzZ31whdRyGJM3gUE86qFvSLg3TAy6mL8N94UnA3BBo5CQ7VTtPVE37-AfYKSU96KGWbtnUYVeT-bCO-o2lM7PoaD3jUat9Z7u-I2o3Rjqq7t-nFc2OYwqMR517o-eS-GWW1TwIggQezAjDz3a17xC17EvbX_kkja94HKZtPhsUCCRChT21qmL"/>
+<div class="flex-1 grid grid-cols-[1fr_auto] gap-4">
+<div class="flex flex-col justify-start">
+<h2 class="font-bold text-lg leading-tight">Climate Change Accelerates, Experts Warn</h2>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary mt-1">By Luiz Carlos Alencar</p>
+</div>
+<div class="flex flex-col items-center justify-start space-y-2">
+<span class="text-xs font-medium text-text-light-secondary dark:text-text-dark-secondary">Score</span>
+<div class="border-2 rounded-lg p-2 flex items-center justify-center w-20 h-14" data-score="8.1">
+<span class="font-bold text-3xl">8.1</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-bold text-sm text-blue-400">92%</span>
+<button class="p-1 text-green-500 rounded-full hover:bg-green-100 dark:hover:bg-green-900/50">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+</button>
+<button class="p-1 text-red-500 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50">
+<span class="material-symbols-outlined text-base">thumb_down</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm p-4">
+<div class="flex gap-4">
+<img alt="Placeholder image for news article" class="w-24 h-24 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXvtQe_Cx8_Vb5nvv32YKYIfpT5N0ei4_DvcR8RUh9aWqCvZo85r0OupZfpgC1DfdZijTE5cbaZ8snohM8WgTzZfpUVoMlCxSwwA5lzQXEoqbEQjZAE4aUKCyg7vi59sONqCws4IfS1GIsNk_mwzZ5GicdqF1pGo7A5bZugJhV_YweyMyCm6ywy6GLKnxyWNcEYqgDr3uXm1wDHyzx7WOyeUxyCpqK42AxHnhgUiWmQByileygoaQFGMl-zfKrOmsOqgZVYmRt99Xn"/>
+<div class="flex-1 grid grid-cols-[1fr_auto] gap-4">
+<div class="flex flex-col justify-start">
+<h2 class="font-bold text-lg leading-tight">Breakthrough in Cancer Treatment Research</h2>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary mt-1">By Luiz Carlos Alencar</p>
+</div>
+<div class="flex flex-col items-center justify-start space-y-2">
+<span class="text-xs font-medium text-text-light-secondary dark:text-text-dark-secondary">Score</span>
+<div class="border-2 rounded-lg p-2 flex items-center justify-center w-20 h-14" data-score="9.2">
+<span class="font-bold text-3xl">9.2</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-bold text-sm text-blue-400">98%</span>
+<button class="p-1 text-green-500 rounded-full hover:bg-green-100 dark:hover:bg-green-900/50">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+</button>
+<button class="p-1 text-red-500 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50">
+<span class="material-symbols-outlined text-base">thumb_down</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm p-4">
+<div class="flex gap-4">
+<img alt="Placeholder image for news article" class="w-24 h-24 object-cover rounded-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmPrkp39HWLnNOkRqcbVmjXmFcho8nWBCQKMhrHU8tFZLOwoVSvH3lUQicZsSN8g65oabMoBWB-mtwtC03QrC3jtfzZBkUajp0XAhHR-3QpMnrtz8ruo2ltirzT2Hfj80jCO-XkqIhFzuUcVJGls5b3quReMLlMu-Cb-_FNtMANGfI-ai_tkN0GN4l4KrecotoT_LOIr1paWUwTrYl8iGfAmig4s7Qbha0nSBBc5teOxuLD7bGeJjjxmCvIZv6PaXRPnXhViEP6OzN"/>
+<div class="flex-1 grid grid-cols-[1fr_auto] gap-4">
+<div class="flex flex-col justify-start">
+<h2 class="font-bold text-lg leading-tight">Global Economy Shows Signs of Recovery</h2>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary mt-1">By Luiz Carlos Alencar</p>
+</div>
+<div class="flex flex-col items-center justify-start space-y-2">
+<span class="text-xs font-medium text-text-light-secondary dark:text-text-dark-secondary">Score</span>
+<div class="border-2 rounded-lg p-2 flex items-center justify-center w-20 h-14" data-score="4.8">
+<span class="font-bold text-3xl">4.8</span>
+</div>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-bold text-sm text-blue-400">65%</span>
+<button class="p-1 text-green-500 rounded-full hover:bg-green-100 dark:hover:bg-green-900/50">
+<span class="material-symbols-outlined text-base">thumb_up</span>
+</button>
+<button class="p-1 text-red-500 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50">
+<span class="material-symbols-outlined text-base">thumb_down</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

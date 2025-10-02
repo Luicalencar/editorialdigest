@@ -1,0 +1,15 @@
+id: "wapo"
+name: "The Washington Post"
+source_type_priority: ["rss", "html"]
+frontpage_url: "https://www.washingtonpost.com/"
+rss_feeds:
+  - "https://feeds.washingtonpost.com/rss/homepage"
+max_items: 15
+requires_js_render: false
+respect_robots: true
+throttle:
+  per_host_rps: 1
+headers:
+  User-Agent: "CharliesEditorialBot/0.1 (contact: you@example.com)"
+
+

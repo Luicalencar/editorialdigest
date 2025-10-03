@@ -9,3 +9,4 @@ def canonicalize_url(url: str) -> str:
     path = parts.path.rstrip("/")
     return urlunsplit((parts.scheme, parts.netloc, path, clean_qs, ""))
 
+

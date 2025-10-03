@@ -10,3 +10,4 @@ SQLAlchemy==2.0.35
 openai==1.51.0
 spacy==3.7.5
 
+

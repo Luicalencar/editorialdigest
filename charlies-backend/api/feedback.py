@@ -37,3 +37,4 @@ def post_feedback(body: FeedbackBody):
         approval = 0 if (up+down)==0 else round(100*up/(up+down))
         return {"votesUp": up, "votesDown": down, "approvalRate": approval, "liked": None, "disliked": None}
 
+

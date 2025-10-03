@@ -10,3 +10,4 @@ def save_raw_html(pub_id: str, slug: str, html: str) -> str:
     path.write_text(html, encoding="utf-8")
     return str(path)
 
+

@@ -29,3 +29,7 @@ INFO:     127.0.0.1:56658 - "POST /analyze HTTP/1.1" 200 OK
 INFO:     127.0.0.1:49414 - "OPTIONS /analyze HTTP/1.1" 200 OK
 INFO:     127.0.0.1:49415 - "POST /analyze HTTP/1.1" 200 OK
 INFO:     127.0.0.1:49445 - "POST /analyze HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [4628]

@@ -59,3 +59,4 @@ def _approval(up: int, down: int):
         return 0
     return round(100 * (up or 0) / total)
 
+

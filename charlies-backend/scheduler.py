@@ -37,3 +37,4 @@ def trigger_publication_now(SessionLocal, publication_id: str):
     log.info(f"Manual trigger for {publication_id}")
     run_publication_harvest(SessionLocal, publication_id)
 
+

@@ -27,3 +27,4 @@ def session_scope(SessionLocal=None):
     finally:
         session.close()
 
+

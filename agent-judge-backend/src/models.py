@@ -14,3 +14,4 @@ class AnalysisCache(Base):
     __table_args__ = (UniqueConstraint("url", "version", "inference_key", name="u_cache_key"),)
 
 
+

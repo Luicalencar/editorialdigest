@@ -3,3 +3,4 @@
 def allowed(url: str) -> bool:
     return True
 
+

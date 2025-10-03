@@ -78,3 +78,4 @@ Score is null until agent is connected.
 - Snapshots only when content changes.
 - Agent hook: agent_job table + score table (unused for now).
 
+

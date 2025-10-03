@@ -57,3 +57,4 @@ def run_publication_harvest(SessionLocal, pub_id: str):
             run.error_json = {"msg": str(e)}
             log.exception("Harvest error")
 
+
